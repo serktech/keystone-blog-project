@@ -12,13 +12,38 @@ const adapterConfig = {
 const PostSchema = require('./lists/Post')
 const UserSchema = require('./lists/User')
 
+const isLoggedIn = ({authentication: {item: user}}) => {
+    return !!user
+}
+
+const isAdmin = ({authentication: {item: user}}) => {
+    return !!user && !!user.isAdmin
+}
+
 const keystone = new Keystone({
     adapter: new Adapter(adapterConfig),
     cookieSecret: process.env.COOKIE_SECRET,
 });
 
-keystone.createList('Post', PostSchema)
-keystone.createList('User', UserSchema)
+keystone.createList('Post', {
+    fields: PostSchema.fields,
+    access: {
+        read: true,
+        create: isLoggedIn,
+        update: isLoggedIn,
+        delete: isLoggedIn,
+    },
+})
+
+keystone.createList('User', {
+    fields: UserSchema.fields,
+    access: {
+        read: true,
+        create: isAdmin,
+        update: isAdmin,
+        delete: isAdmin,
+    },
+})
 
 const authStrategy = keystone.createAuthStrategy({
     type: PasswordAuthStrategy,
@@ -32,5 +57,10 @@ const authStrategy = keystone.createAuthStrategy({
 
 module.exports = {
     keystone,
-    apps: [new GraphQLApp(), new AdminUIApp({name: PROJECT_NAME, enableDefaultRoute: true, authStrategy,})],
+    apps: [new GraphQLApp(), new AdminUIApp({
+        name: PROJECT_NAME,
+        enableDefaultRoute: true,
+        authStrategy,
+        isAccessAllowed: isAdmin,
+    })],
 };

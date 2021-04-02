@@ -9,7 +9,7 @@ const adapterConfig = {
 };
 
 const PostSchema = require('./lists/Post')
-
+const UserSchema = require('./lists/User')
 
 const keystone = new Keystone({
     adapter: new Adapter(adapterConfig),
@@ -17,7 +17,7 @@ const keystone = new Keystone({
 });
 
 keystone.createList('Post', PostSchema)
-
+keystone.createList('User', UserSchema)
 module.exports = {
     keystone,
     apps: [new GraphQLApp(), new AdminUIApp({name: PROJECT_NAME, enableDefaultRoute: true})],

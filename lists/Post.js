@@ -24,3 +24,5 @@ const postFields = {
         }
     }
 }
+
+module.exports = postFields

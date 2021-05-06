@@ -11,7 +11,7 @@ Database: MongoDB Atlas - use Free Tier.
 4. Use your credentials in .env
 
     Example:
-   `MONGO_URI = "mongodb+srv://gio123:qwerty@009@cluster0.09xg9.mongodb.net/PROJECT-KEYSTONEJS-GRAPHQLDB?retryWrites=true&w=majority"`
+   `MONGO_URI = "mongodb+srv://<username>:<password>@cluster0.09xg9.mongodb.net/PROJECT-KEYSTONEJS-GRAPHQLDB?retryWrites=true&w=majority"`
 
 
 
